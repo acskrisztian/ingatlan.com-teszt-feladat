@@ -1,7 +1,17 @@
 <template>
 	<div class="home">
 		<div class="home__col-left">
-			<div id="nav" class="home__navigation">
+			<div v-if="isTablet" v-show="menuOpened" class="home__navigation">
+				<router-link class="home__navigation-link" to="/Lista">
+					<span>Hirdetések</span>
+					<span>Lista</span>
+				</router-link>
+				<router-link class="home__navigation-link" to="/Kedvencek">
+					<span>Kedvencek</span>
+					<span>Kedvenceim</span>
+				</router-link>
+			</div>
+			<div v-else id="nav" class="home__navigation">
 				<router-link class="home__navigation-link" to="/Lista">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M4 13C4.55 13 5 12.55 5 12C5 11.45 4.55 11 4 11C3.45 11 3 11.45 3 12C3 12.55 3.45 13 4 13Z" fill="#323EC8"/>
@@ -24,7 +34,7 @@
 		<div class="home__col-right">
 			<div class="home__title-container">
 				<p class="home__title">{{this.$route.name}}</p>
-				<span class="home__counter">4db</span>
+				<span class="home__counter">{{this.$route.path == '/Lista' ? listLength : favouritesLength}} db</span>
 			</div>
 			<router-view />
 		</div>
@@ -45,7 +55,7 @@
 	width: 100%;
 	z-index: 1;
 
-	@media screen and (min-width: 768px) {
+	@media screen and (min-width: 992px) {
 		left: auto;
 		max-width: 300px;
 		padding-right: 40px;
@@ -55,10 +65,8 @@
 }
 
 .home__col-right {
-	width: 100%;
-
-	@media screen and (min-width: 768px) {
-		flex-grow: 1;
+	flex-grow: 1;
+	@media screen and (min-width: 992px) {
 		max-width: calc(100% - 300px);
 	}
 
@@ -108,6 +116,10 @@
 	justify-content: space-between;
 	margin-bottom: 30px;
 	padding: 9px 30px;
+
+	@media screen and (min-width: 768px) {
+		padding: 14px 30px;
+	}
 }
 
 .home__title {
@@ -115,6 +127,11 @@
 	font-weight: 700;
 	line-break: 23px;
 	margin: 0;
+
+	@media screen and (min-width: 768px) {
+		font-size: 24px;
+		line-height: 32px;
+	}
 }
 
 .home__counter {
@@ -125,7 +142,20 @@
 </style>
 
 <script>
+import isMobile from '../common/IsMobile';
 export default {
-	name: "Home"
+	name: "Home",
+	mixins: [isMobile],
+	computed: {
+		menuOpened() {
+			return this.$attrs.menuOpened;
+		},
+		listLength() {
+			return this.$store.state.ads.length;
+		},
+		favouritesLength() {
+			return this.$store.state.favourites.length;
+		}
+	}
 };
 </script>

@@ -1,0 +1,24 @@
+@font-face {
+	font-family: redHatDisplay;
+	src: url(../assets/RedHatDisplay-Regular.ttf);
+  }
+
+main {
+	background: #fafbff;
+	color: #191919;
+	font-family: redHatDisplay;
+	padding: 23px 20px;
+
+	@media screen and (min-width: 768px) {
+		padding: 40px 20px;
+	}
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:hover {
+	color: inherit;
+}
